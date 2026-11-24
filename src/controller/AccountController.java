@@ -10,6 +10,7 @@ import model.InterestBearing;
 import model.Withdrawable;
 import view.AccountView;
 import view.LoginView;
+import view.OpenAccountView;
 
 // Controller: connects the account screen to the model.
 public class AccountController {
@@ -69,6 +70,7 @@ public class AccountController {
         view.getDepositButton().setOnAction(e -> handleDeposit());
         view.getWithdrawButton().setOnAction(e -> handleWithdraw());
         view.getPayInterestButton().setOnAction(e -> handlePayInterest());
+        view.getOpenAccountButton().setOnAction(e -> handleOpenAccount());
         view.getLogoutButton().setOnAction(e -> handleLogout());
     }
 
@@ -179,5 +181,10 @@ public class AccountController {
     // goes back to the login screen
     private void handleLogout() {
         new LoginController(stage, new LoginView(), service).show();
+    }
+
+    // opens the screen where the customer can open a new account
+    private void handleOpenAccount() {
+        new OpenAccountController(stage, new OpenAccountView(), customer, service).show();
     }
 }

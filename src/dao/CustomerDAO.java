@@ -70,4 +70,23 @@ public class CustomerDAO {
         }
         return null;
     }
+
+    // works out the next customer ID, for example C010 -> C011
+    public String nextCustomerId() {
+        String sql = "SELECT MAX(customer_id) FROM customer";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next() && rs.getString(1) != null) {
+                int number = Integer.parseInt(rs.getString(1).substring(1));
+                return String.format("C%03d", number + 1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Could not work out the next customer ID: " + e.getMessage());
+        }
+        return "C001";
+    }
 }

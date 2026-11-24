@@ -120,4 +120,26 @@ public class AccountDAO {
             return "CHEQUE";
         }
     }
+
+    // works out the next account number for a prefix, for example S011 -> S012
+    public String nextAccountNumber(String prefix) {
+        String sql = "SELECT MAX(account_number) FROM account WHERE account_number LIKE ?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, prefix + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getString(1) != null) {
+                    int number = Integer.parseInt(rs.getString(1).substring(prefix.length()));
+                    return prefix + String.format("%03d", number + 1);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Could not work out the next account number: " + e.getMessage());
+        }
+        return prefix + "001";
+    }
 }

@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import model.Customer;
 import view.AccountView;
 import view.LoginView;
+import view.RegisterView;
 
 // Controller: connects the login screen to the model.
 public class LoginController {
@@ -20,11 +21,12 @@ public class LoginController {
 
         // what happens when Login is clicked
         view.getLoginButton().setOnAction(e -> handleLogin());
+        view.getRegisterButton().setOnAction(e -> openRegisterScreen());
     }
 
     // shows the login screen
     public void show() {
-        stage.setScene(new Scene(view.getRoot(), 400, 300));
+        stage.setScene(new Scene(view.getRoot(), 400, 360));
         stage.setTitle("Banking System - Login");
         stage.show();
     }
@@ -48,5 +50,10 @@ public class LoginController {
         // login worked, so open the account screen
         AccountView accountView = new AccountView();
         new AccountController(stage, accountView, customer, service).show();
+    }
+
+    // opens the register screen
+    private void openRegisterScreen() {
+        new RegisterController(stage, new RegisterView(), service).show();
     }
 }

@@ -58,22 +58,51 @@ public class DatabaseSetup {
         addSampleData();
     }
 
-    // only adds the sample customer if the database is still empty
+    // adds 10 sample customers (and their accounts). A customer that is already there is skipped.
     private static void addSampleData() {
         CustomerDAO customerDAO = new CustomerDAO();
         AccountDAO accountDAO = new AccountDAO();
 
-        if (customerDAO.findByUsername("thato") != null) {
-            return;
+        // first name, surname, address, phone, username
+        String[][] people = {
+                {"Thato", "Molefe", "Gaborone", "71234567", "thato"},
+                {"Kabelo", "Mothibi", "Francistown", "71234568", "kabelo"},
+                {"Lorato", "Seretse", "Maun", "71234569", "lorato"},
+                {"Tumelo", "Kgosi", "Gaborone", "71234570", "tumelo"},
+                {"Naledi", "Phiri", "Palapye", "71234571", "naledi"},
+                {"Boitumelo", "Dube", "Serowe", "71234572", "boitumelo"},
+                {"Mpho", "Ramotswa", "Gaborone", "71234573", "mpho"},
+                {"Onkabetse", "Moyo", "Kasane", "71234574", "onkabetse"},
+                {"Neo", "Segwabe", "Francistown", "71234575", "neo"},
+                {"Kagiso", "Tau", "Lobatse", "71234576", "kagiso"}
+        };
+
+        for (int i = 0; i < people.length; i++) {
+            String[] p = people[i];
+
+            if (customerDAO.findByUsername(p[4]) != null) {
+                continue;
+            }
+
+            String number = String.format("%03d", i + 1);   // 001, 002, ...
+            String branch = (i % 2 == 0) ? "Main Mall" : "Francistown";
+
+            Customer customer = new Customer("C" + number, p[0], p[1], p[2], p[3], p[4], "pass123");
+            customerDAO.save(customer);
+
+            // everyone gets a savings account
+            accountDAO.save(new SavingsAccount("S" + number, branch, 1000.00 + i * 250, customer));
+
+            // every second customer gets an investment account
+            if (i % 2 == 0) {
+                accountDAO.save(new InvestmentAccount("I" + number, branch, 2000.00 + i * 500, customer));
+            }
+
+            // every third customer gets a cheque account
+            if (i % 3 == 0) {
+                accountDAO.save(new ChequeAccount("CH" + number, branch, 500.00 + i * 100, customer,
+                        "Kgalagadi Traders", "Gaborone"));
+            }
         }
-
-        Customer customer = new Customer("C001", "Thato", "Molefe", "Gaborone",
-                "71234567", "thato", "pass123");
-        customerDAO.save(customer);
-
-        accountDAO.save(new SavingsAccount("S001", "Main Mall", 1000.00, customer));
-        accountDAO.save(new InvestmentAccount("I001", "Main Mall", 2000.00, customer));
-        accountDAO.save(new ChequeAccount("CH001", "Main Mall", 500.00, customer,
-                "Kgalagadi Traders", "Gaborone"));
     }
 }

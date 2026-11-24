@@ -26,6 +26,7 @@ public class AccountView {
     private Button depositButton;
     private Button withdrawButton;
     private Button payInterestButton;
+    private Button openAccountButton;
     private Button logoutButton;
     private TableView<Transaction> transactionTable;
     private Label messageLabel;
@@ -47,6 +48,7 @@ public class AccountView {
         depositButton = new Button("Deposit");
         withdrawButton = new Button("Withdraw");
         payInterestButton = new Button("Pay Interest");
+        openAccountButton = new Button("Open New Account");
         logoutButton = new Button("Logout");
 
         HBox buttons = new HBox(10, depositButton, withdrawButton, payInterestButton);
@@ -63,7 +65,7 @@ public class AccountView {
 
         root = new VBox(10, welcomeLabel, accountBox, typeLabel, balanceLabel,
                 amountField, buttons, new Label("Transactions:"),
-                transactionTable, messageLabel, logoutButton);
+                transactionTable, messageLabel, new HBox(10, openAccountButton, logoutButton));
         root.setAlignment(Pos.TOP_LEFT);
         root.setPadding(new Insets(20));
     }
@@ -84,6 +86,7 @@ public class AccountView {
     public Button getDepositButton() { return depositButton; }
     public Button getWithdrawButton() { return withdrawButton; }
     public Button getPayInterestButton() { return payInterestButton; }
+    public Button getOpenAccountButton() { return openAccountButton; }
     public Button getLogoutButton() { return logoutButton; }
     public TableView<Transaction> getTransactionTable() { return transactionTable; }
 

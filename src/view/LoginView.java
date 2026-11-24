@@ -16,6 +16,7 @@ public class LoginView {
     private TextField usernameField;
     private PasswordField passwordField;
     private Button loginButton;
+    private Button registerButton;
     private Label messageLabel;
 
     public LoginView() {
@@ -29,6 +30,7 @@ public class LoginView {
         passwordField.setPromptText("Password");
 
         loginButton = new Button("Login");
+        registerButton = new Button("Register new customer");
 
         messageLabel = new Label();
         messageLabel.setStyle("-fx-text-fill: red;");
@@ -42,7 +44,7 @@ public class LoginView {
         form.add(new Label("Password:"), 0, 1);
         form.add(passwordField, 1, 1);
 
-        root = new VBox(15, title, form, loginButton, messageLabel);
+        root = new VBox(15, title, form, loginButton, registerButton, messageLabel);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
     }
@@ -51,8 +53,16 @@ public class LoginView {
     public TextField getUsernameField() { return usernameField; }
     public PasswordField getPasswordField() { return passwordField; }
     public Button getLoginButton() { return loginButton; }
+    public Button getRegisterButton() { return registerButton; }
 
     public void showMessage(String text) {
+        messageLabel.setStyle("-fx-text-fill: red;");
+        messageLabel.setText(text);
+    }
+
+    // green message, used after a successful registration
+    public void showSuccess(String text) {
+        messageLabel.setStyle("-fx-text-fill: green;");
         messageLabel.setText(text);
     }
 }
